@@ -18,7 +18,7 @@ model User {
   lastName   String    @map("last_name")
   birthDate  String    @map("birth_date")
   gender     String
-  picture    String
+  picture    String?
   email      String    @unique
   password   String
   posts      Post[]
