@@ -25,6 +25,7 @@ model User {
   comments   Comment[]
   following  User[]    @relation("UserFollows")
   followedBy User[]    @relation("UserFollows")
+  @@map("users")
 }
 
 model Post {
@@ -36,6 +37,7 @@ model Post {
   author   User      @relation(fields: [authorId], references: [id])
   authorId Int
   comments Comment[]
+  @@map("posts")
 }
 
 model Comment {
@@ -50,4 +52,5 @@ model Comment {
   comment   Comment?  @relation("CommentReplies", fields: [commentId], references: [id])
   commentId Int?
   replies   Comment[] @relation("CommentReplies")
+  @@map("comments")
 }
