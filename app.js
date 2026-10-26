@@ -7,6 +7,7 @@ const tokensRoute = require("./routes/tokens_route.js");
 const app = express();
 
 app.use(express.json());
+app.use(require("cors")());
 
 app.use("/users", usersRoute);
 app.use("/tokens", tokensRoute);
