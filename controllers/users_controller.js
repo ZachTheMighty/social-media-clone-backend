@@ -1,10 +1,10 @@
-const validateUser = require("../middlewares/validate_user.js");
+const validateSignUp = require("../middlewares/validate_sign_up.js");
 const prisma = require("../lib/prisma.ts");
 const { matchedData } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
 const createUser = [
-  validateUser,
+  validateSignUp,
   async (req, res) => {
     const { firstName, lastName, month, day, year, gender, email, password } =
       matchedData(req);
