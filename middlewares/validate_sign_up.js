@@ -51,11 +51,9 @@ module.exports = [
     .withMessage("Please enter a valid year."),
   body("gender")
     .trim()
-    .notEmpty()
-    .withMessage(empty)
-    .toLowerCase()
     .custom((value) => value === "male" || value === "female")
-    .withMessage("There are only two genders bitch."),
+    .withMessage(empty)
+    .toLowerCase(),
   body("email")
     .trim()
     .notEmpty()
