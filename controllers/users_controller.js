@@ -2,12 +2,23 @@ const validateSignUp = require("../middlewares/validate_sign_up.js");
 const prisma = require("../lib/prisma.ts");
 const { matchedData } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const uploadImage = require("../middlewares/upload_image.js");
 
 const createUser = [
+  uploadImage,
   validateSignUp,
   async (req, res) => {
-    const { firstName, lastName, month, day, year, gender, email, password } =
-      matchedData(req);
+    const {
+      firstName,
+      lastName,
+      month,
+      day,
+      year,
+      gender,
+      photo,
+      email,
+      password,
+    } = matchedData(req);
 
     if (await prisma.user.findUnique({ where: { email } }))
       return res
@@ -20,6 +31,7 @@ const createUser = [
         lastName,
         birthDate: `${month} ${day}, ${year}`,
         gender,
+        photo,
         email,
         password: await bcrypt.hash(password, 10),
       },
