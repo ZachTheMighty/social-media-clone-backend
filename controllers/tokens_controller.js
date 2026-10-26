@@ -14,9 +14,9 @@ const createToken = [
 
     const user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user) return res.status(401).json(vagueAssMessage);
+    if (!user) return res.status(401).json({ errors: vagueAssMessage });
     if (!(await bcrypt.compare(password, user.password)))
-      return res.status(401).json(vagueAssMessage);
+      return res.status(401).json({ errors: vagueAssMessage });
 
     jwt.sign(
       { user },
