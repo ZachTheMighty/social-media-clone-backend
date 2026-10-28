@@ -8,17 +8,8 @@ const createUser = [
   uploadImage,
   validateSignUp,
   async (req, res) => {
-    const {
-      firstName,
-      lastName,
-      month,
-      day,
-      year,
-      gender,
-      photo,
-      email,
-      password,
-    } = matchedData(req);
+    const { firstName, lastName, month, day, year, gender, email, password } =
+      matchedData(req);
 
     if (await prisma.user.findUnique({ where: { email } }))
       return res
@@ -31,7 +22,7 @@ const createUser = [
         lastName,
         birthDate: `${month} ${day}, ${year}`,
         gender,
-        photo,
+        picture: req.imageUrl,
         email,
         password: await bcrypt.hash(password, 10),
       },
