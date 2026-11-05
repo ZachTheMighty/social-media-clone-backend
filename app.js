@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const usersRoute = require("./routes/users_route.js");
 const tokensRoute = require("./routes/tokens_route.js");
+const authenticate = require("./middlewares/authenticate.js");
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(require("cors")());
 
 app.use("/users", usersRoute);
 app.use("/tokens", tokensRoute);
+app.use(authenticate);
 
 const port = process.env.PORT;
 
