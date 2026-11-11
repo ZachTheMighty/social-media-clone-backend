@@ -16,6 +16,8 @@ app.use("/tokens", tokensRoute);
 app.use(authenticate);
 app.use("/posts", postsRoute);
 
+app.use((req, res) => res.json({ error: "invalid endpoint, bitch" }));
+
 const port = process.env.PORT;
 
 app.listen(port, (error) => {
