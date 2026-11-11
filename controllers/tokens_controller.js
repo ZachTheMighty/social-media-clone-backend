@@ -8,11 +8,15 @@ require("dotenv").config();
 const createToken = [
   validateLogin,
   async (req, res) => {
-    const { email, password } = matchedData(req);
+    const { identifier, password } = matchedData(req);
     const vagueAssMessage =
-      "The combination of the entered email and password don't match any user in our records.";
+      "The combination of the entered email/username and password don't match any user in our records.";
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [{ email: identifier }, { username: identifier }],
+      },
+    });
 
     if (!user) return res.status(401).json({ errors: vagueAssMessage });
     if (!(await bcrypt.compare(password, user.password)))

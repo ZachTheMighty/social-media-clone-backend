@@ -8,13 +8,32 @@ const createUser = [
   uploadImage,
   validateSignUp,
   async (req, res) => {
-    const { firstName, lastName, month, day, year, gender, email, password } =
-      matchedData(req);
+    const {
+      firstName,
+      lastName,
+      month,
+      day,
+      year,
+      gender,
+      email,
+      password,
+      username,
+    } = matchedData(req);
 
     if (await prisma.user.findUnique({ where: { email } }))
       return res
         .status(409)
         .json({ errors: "An account with email already exists." });
+
+    if (await prisma.user.findUnique({ where: { username } }))
+      return res.status(409).json({
+        errors: [
+          {
+            msg: `The username ${username} is not available.`,
+            path: "username",
+          },
+        ],
+      });
 
     const user = await prisma.user.create({
       data: {
@@ -25,12 +44,13 @@ const createUser = [
         picture: req.imageUrl,
         email,
         password: await bcrypt.hash(password, 10),
+        username,
       },
     });
     res.json(
       await prisma.user.findUnique({
         where: { id: user.id },
-        omit: { password: true },
+        omit: { id: true, password: true },
       }),
     );
   },

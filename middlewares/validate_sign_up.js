@@ -90,5 +90,14 @@ module.exports = [
     .withMessage(password)
     .custom((value, { req }) => value === req.body.password)
     .withMessage("The two passwords don't match."),
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage(empty)
+    .isLength({ min: 3, max: 15 })
+    .withMessage("Username must be between 3 and 15 characters")
+    .matches(/^[a-zA-Z0-9_]+$/)
+    .withMessage("Username can only contain letters, numbers, and underscores")
+    .escape(),
   validateResult,
 ];

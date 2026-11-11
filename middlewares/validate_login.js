@@ -6,12 +6,7 @@ const password =
   "Password must be between 8 and 24  characters, and must contain at least one";
 
 module.exports = [
-  body("email")
-    .trim()
-    .notEmpty()
-    .withMessage(empty)
-    .isEmail()
-    .withMessage("Email must be in the format a@b.domain"),
+  body("identifier").trim().notEmpty().withMessage(empty),
   body("password")
     .trim()
     .notEmpty()
