@@ -10,7 +10,13 @@ const createRequest = async (req, res) => {
       receiverId: receiver.id,
     },
   });
+};
+
+const deleteRequest = async (req, res) => {
+  const request = await prisma.request.delete({
+    where: { id: +req.params.id },
+  });
   res.end();
 };
 
-module.exports = { createRequest };
+module.exports = { createRequest, deleteRequest };
