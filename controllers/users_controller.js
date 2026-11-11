@@ -68,6 +68,7 @@ const getAllUsers = async (req, res) => {
           id: true,
           sender: { omit: { id: true, password: true, email: true } },
           receiver: { omit: { id: true, password: true, email: true } },
+          status: true,
         },
       },
       receivedRequests: {
@@ -75,6 +76,7 @@ const getAllUsers = async (req, res) => {
           id: true,
           sender: { omit: { id: true, password: true, email: true } },
           receiver: { omit: { id: true, password: true, email: true } },
+          status: true,
         },
       },
     },

@@ -25,6 +25,7 @@ module.exports = (req, res, next) => {
             id: true,
             sender: { omit: { id: true, password: true, email: true } },
             receiver: { omit: { id: true, password: true, email: true } },
+            status: true,
           },
         },
         receivedRequests: {
@@ -32,6 +33,7 @@ module.exports = (req, res, next) => {
             id: true,
             sender: { omit: { id: true, password: true, email: true } },
             receiver: { omit: { id: true, password: true, email: true } },
+            status: true,
           },
         },
       },
