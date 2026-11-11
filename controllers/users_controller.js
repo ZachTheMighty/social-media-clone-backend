@@ -56,4 +56,11 @@ const createUser = [
   },
 ];
 
-module.exports = { createUser };
+const getAllUsers = async (req, res) => {
+  const users = await prisma.user.findMany({
+    omit: { id: true, password: true },
+  });
+  res.json(users);
+};
+
+module.exports = { createUser, getAllUsers };
