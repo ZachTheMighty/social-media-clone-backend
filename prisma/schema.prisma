@@ -25,7 +25,7 @@ model User {
   posts      Post[]
   comments   Comment[]
   following  User[]    @relation("UserFollows")
-  followedBy User[]    @relation("UserFollows")
+  followers User[]    @relation("UserFollows")
   @@map("users")
 }
 
