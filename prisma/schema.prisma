@@ -13,19 +13,22 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  firstName  String    @map("first_name")
-  lastName   String    @map("last_name")
-  birthDate  String    @map("birth_date")
-  gender     String
-  picture    String?
-  email      String    @unique
-  password   String
-  username String @unique
-  posts      Post[]
-  comments   Comment[]
-  following  User[]    @relation("UserFollows")
-  followers User[]    @relation("UserFollows")
+  id               Int       @id @default(autoincrement())
+  firstName        String    @map("first_name")
+  lastName         String    @map("last_name")
+  birthDate        String    @map("birth_date")
+  gender           String
+  picture          String?
+  email            String    @unique
+  password         String
+  username         String    @unique
+  posts            Post[]
+  comments         Comment[]
+  following        User[]    @relation("UserFollows")
+  followers        User[]    @relation("UserFollows")
+  sentRequests     Request[] @relation("SenderUser")
+  receivedRequests Request[] @relation("ReceiverUser")
+
   @@map("users")
 }
 
@@ -38,6 +41,7 @@ model Post {
   author   User      @relation(fields: [authorId], references: [id])
   authorId Int
   comments Comment[]
+
   @@map("posts")
 }
 
@@ -53,5 +57,23 @@ model Comment {
   comment   Comment?  @relation("CommentReplies", fields: [commentId], references: [id])
   commentId Int?
   replies   Comment[] @relation("CommentReplies")
+
   @@map("comments")
+}
+
+model Request {
+  id         Int           @id @default(autoincrement())
+  sender     User          @relation("SenderUser", fields: [senderId], references: [id])
+  senderId   Int           @map("sender_id")
+  receiver   User          @relation("ReceiverUser", fields: [receiverId], references: [id])
+  receiverId Int           @map("receiver_id")
+  status     RequestStatus @default(PENDING)
+
+  @@map("requests")
+}
+
+enum RequestStatus {
+  ACCEPTED
+  REJECTED
+  PENDING
 }

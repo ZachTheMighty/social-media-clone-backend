@@ -4,6 +4,7 @@ require("dotenv").config();
 const usersRoute = require("./routes/users_route.js");
 const tokensRoute = require("./routes/tokens_route.js");
 const postsRoute = require("./routes/posts_route.js");
+const requestsRoute = require("./routes/requests_route.js");
 const authenticate = require("./middlewares/authenticate.js");
 
 const app = express();
@@ -15,6 +16,7 @@ app.use("/users", usersRoute);
 app.use("/tokens", tokensRoute);
 app.use(authenticate);
 app.use("/posts", postsRoute);
+app.use("/requests", requestsRoute);
 
 app.use((req, res) => res.json({ error: "invalid endpoint, bitch" }));
 

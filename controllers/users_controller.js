@@ -59,7 +59,13 @@ const createUser = [
 const getAllUsers = async (req, res) => {
   const users = await prisma.user.findMany({
     omit: { id: true, password: true },
-    include: { posts: true, followers: true, following: true },
+    include: {
+      posts: true,
+      followers: true,
+      following: true,
+      sentRequests: true,
+      receivedRequests: true,
+    },
   });
   res.json(users);
 };
