@@ -20,8 +20,20 @@ module.exports = (req, res, next) => {
         posts: true,
         followers: true,
         following: true,
-        sentRequests: true,
-        receivedRequests: true,
+        sentRequests: {
+          select: {
+            id: true,
+            sender: { omit: { id: true, password: true, email: true } },
+            receiver: { omit: { id: true, password: true, email: true } },
+          },
+        },
+        receivedRequests: {
+          select: {
+            id: true,
+            sender: { omit: { id: true, password: true, email: true } },
+            receiver: { omit: { id: true, password: true, email: true } },
+          },
+        },
       },
     });
 
