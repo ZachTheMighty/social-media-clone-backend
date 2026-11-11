@@ -16,6 +16,7 @@ module.exports = (req, res, next) => {
     const user = await prisma.user.findUnique({
       where: { id: payload.user.id },
       omit: { password: true },
+      include: { posts: true, followers: true, following: true },
     });
 
     if (req.originalUrl === "/tokens/auth")
