@@ -16,6 +16,7 @@ const createRequest = async (req, res) => {
       id: true,
       sender: { omit: { id: true, password: true, email: true } },
       receiver: { omit: { id: true, password: true, email: true } },
+      status: true,
     },
   });
   res.json(request);
