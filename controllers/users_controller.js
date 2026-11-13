@@ -1,4 +1,5 @@
 const validateSignUp = require("../middlewares/validate_sign_up.js");
+const validateEdit = require("../middlewares/validate_edit.js");
 const prisma = require("../lib/prisma.ts");
 const { matchedData } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -51,9 +52,30 @@ const createUser = [
     res.json(
       await prisma.user.findUnique({
         where: { id: user.id },
-        omit: { id: true, password: true },
+        ...publicUserArgs,
       }),
     );
+  },
+];
+
+const editUser = [
+  uploadImage,
+  validateEdit,
+  async (req, res) => {
+    const { firstName, lastName, month, day, year, gender } = matchedData(req);
+
+    const user = await prisma.user.update({
+      where: { id: req.user.id },
+      data: {
+        firstName,
+        lastName,
+        birthDate: `${month} ${day}, ${year}`,
+        gender,
+        picture: req.imageUrl,
+      },
+      ...publicUserArgs,
+    });
+    res.json(user);
   },
 ];
 
@@ -75,4 +97,4 @@ const unFollowUser = async (req, res) => {
   res.json(user);
 };
 
-module.exports = { createUser, getAllUsers, unFollowUser };
+module.exports = { createUser, getAllUsers, unFollowUser, editUser };
