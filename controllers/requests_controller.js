@@ -28,4 +28,18 @@ const deleteRequest = async (req, res) => {
   res.json(request);
 };
 
-module.exports = { createRequest, deleteRequest };
+const updateRequestStatus = async (req, res) => {
+  const request = await prisma.request.update({
+    where: { id: +req.params.id },
+    data: { status: req.body.status },
+    select: {
+      id: true,
+      sender: { omit: { id: true, password: true, email: true } },
+      receiver: { omit: { id: true, password: true, email: true } },
+      status: true,
+    },
+  });
+  res.json(request);
+};
+
+module.exports = { createRequest, deleteRequest, updateRequestStatus };
