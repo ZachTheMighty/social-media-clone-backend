@@ -4,14 +4,34 @@ const createRequest = async (req, res) => {
   const receiver = await prisma.user.findUnique({
     where: { username: req.params.username },
   });
-  const r = await prisma.request.create({
+  const requestExists = await prisma.request.findFirst({
+    where: {
+      AND: {
+        senderId: req.user.id,
+        receiverId: receiver.id,
+      },
+    },
+  });
+  if (requestExists) {
+    return res.json(
+      await prisma.request.update({
+        where: { id: requestExists.id },
+        data: { status: "PENDING" },
+        select: {
+          id: true,
+          sender: { omit: { id: true, password: true, email: true } },
+          receiver: { omit: { id: true, password: true, email: true } },
+          status: true,
+        },
+      }),
+    );
+  }
+
+  const request = await prisma.request.create({
     data: {
       senderId: req.user.id,
       receiverId: receiver.id,
     },
-  });
-  const request = await prisma.request.findUnique({
-    where: { id: r.id },
     select: {
       id: true,
       sender: { omit: { id: true, password: true, email: true } },
