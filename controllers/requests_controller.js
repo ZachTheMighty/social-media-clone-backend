@@ -18,7 +18,7 @@ const createRequest = async (req, res) => {
       await prisma.request.update({
         where: { id: requestExists.id },
         data: { status: "PENDING" },
-        ...publicRequest,
+        select: { ...publicRequest },
       }),
     );
   }
@@ -42,7 +42,7 @@ const updateRequestStatus = async (req, res) => {
   const request = await prisma.request.update({
     where: { id: +req.params.id },
     data: { status: req.body.status },
-    ...publicRequest,
+    select: { ...publicRequest },
   });
   if (request.status === "ACCEPTED")
     await prisma.user.update({
