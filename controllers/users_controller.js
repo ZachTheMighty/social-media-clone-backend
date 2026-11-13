@@ -58,7 +58,7 @@ const createUser = [
 
 const getAllUsers = async (req, res) => {
   const users = await prisma.user.findMany({
-    omit: { id: true, password: true },
+    omit: { id: true, password: true, email: true },
     include: {
       posts: true,
       followers: true,
@@ -84,4 +84,36 @@ const getAllUsers = async (req, res) => {
   res.json(users);
 };
 
-module.exports = { createUser, getAllUsers };
+const unFollowUser = async (req, res) => {
+  const user = await prisma.user.update({
+    where: { username: req.user.username },
+    data: {
+      following: { disconnect: { username: req.params.username } },
+    },
+    omit: { id: true, password: true, email: true },
+    include: {
+      posts: true,
+      followers: true,
+      following: true,
+      sentRequests: {
+        select: {
+          id: true,
+          sender: { omit: { id: true, password: true, email: true } },
+          receiver: { omit: { id: true, password: true, email: true } },
+          status: true,
+        },
+      },
+      receivedRequests: {
+        select: {
+          id: true,
+          sender: { omit: { id: true, password: true, email: true } },
+          receiver: { omit: { id: true, password: true, email: true } },
+          status: true,
+        },
+      },
+    },
+  });
+  res.json(user);
+};
+
+module.exports = { createUser, getAllUsers, unFollowUser };

@@ -5,5 +5,6 @@ const authenticate = require("../middlewares/authenticate.js");
 route.post("/", controller.createUser);
 route.use(authenticate);
 route.get("/", controller.getAllUsers);
+route.put("/:username", controller.unFollowUser);
 
 module.exports = route;
