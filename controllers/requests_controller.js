@@ -59,6 +59,14 @@ const updateRequestStatus = async (req, res) => {
       status: true,
     },
   });
+  if (request.status === "ACCEPTED")
+    await prisma.user.update({
+      where: { username: request.sender.username },
+      data: {
+        following: { connect: { username: request.receiver.username } },
+      },
+    });
+
   res.json(request);
 };
 
