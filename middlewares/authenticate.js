@@ -14,14 +14,17 @@ module.exports = (req, res, next) => {
   jwt.verify(token, process.env.SECRET, async (error, payload) => {
     if (error) return res.status(403).json({ error, isAuth: false });
 
-    const user = await prisma.user.findUnique({
+    const publicUser = await prisma.user.findUnique({
       where: { id: payload.user.id },
-      omit: { id: true, password: true, email: true },
       ...publicUserArgs,
     });
 
     if (req.originalUrl === "/tokens/auth")
-      return res.json({ isAuth: true, user });
+      return res.json({ isAuth: true, user: publicUser });
+
+    const user = await prisma.user.findUnique({
+      where: { id: payload.user.id },
+    });
 
     req.user = user;
     next();
