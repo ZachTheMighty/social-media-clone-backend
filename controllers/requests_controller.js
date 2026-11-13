@@ -1,4 +1,5 @@
 const prisma = require("../lib/prisma.ts");
+const { publicRequest } = require("../prisma/selectors.js");
 
 const createRequest = async (req, res) => {
   const receiver = await prisma.user.findUnique({
@@ -17,12 +18,7 @@ const createRequest = async (req, res) => {
       await prisma.request.update({
         where: { id: requestExists.id },
         data: { status: "PENDING" },
-        select: {
-          id: true,
-          sender: { omit: { id: true, password: true, email: true } },
-          receiver: { omit: { id: true, password: true, email: true } },
-          status: true,
-        },
+        ...publicRequest,
       }),
     );
   }
@@ -31,12 +27,6 @@ const createRequest = async (req, res) => {
     data: {
       senderId: req.user.id,
       receiverId: receiver.id,
-    },
-    select: {
-      id: true,
-      sender: { omit: { id: true, password: true, email: true } },
-      receiver: { omit: { id: true, password: true, email: true } },
-      status: true,
     },
   });
   res.json(request);
@@ -52,12 +42,7 @@ const updateRequestStatus = async (req, res) => {
   const request = await prisma.request.update({
     where: { id: +req.params.id },
     data: { status: req.body.status },
-    select: {
-      id: true,
-      sender: { omit: { id: true, password: true, email: true } },
-      receiver: { omit: { id: true, password: true, email: true } },
-      status: true,
-    },
+    ...publicRequest,
   });
   if (request.status === "ACCEPTED")
     await prisma.user.update({

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const prisma = require("../lib/prisma.ts");
+const { publicUserArgs } = require("../prisma/selectors.js");
 
 module.exports = (req, res, next) => {
   if (!req.headers["authorization"])
@@ -15,28 +16,8 @@ module.exports = (req, res, next) => {
 
     const user = await prisma.user.findUnique({
       where: { id: payload.user.id },
-      omit: { password: true },
-      include: {
-        posts: true,
-        followers: true,
-        following: true,
-        sentRequests: {
-          select: {
-            id: true,
-            sender: { omit: { id: true, password: true, email: true } },
-            receiver: { omit: { id: true, password: true, email: true } },
-            status: true,
-          },
-        },
-        receivedRequests: {
-          select: {
-            id: true,
-            sender: { omit: { id: true, password: true, email: true } },
-            receiver: { omit: { id: true, password: true, email: true } },
-            status: true,
-          },
-        },
-      },
+      omit: { id: true, password: true, email: true },
+      ...publicUserArgs,
     });
 
     if (req.originalUrl === "/tokens/auth")

@@ -3,6 +3,7 @@ const prisma = require("../lib/prisma.ts");
 const { matchedData } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const uploadImage = require("../middlewares/upload_image.js");
+const { publicUserArgs } = require("../prisma/selectors.js");
 
 const createUser = [
   uploadImage,
@@ -58,28 +59,7 @@ const createUser = [
 
 const getAllUsers = async (req, res) => {
   const users = await prisma.user.findMany({
-    omit: { id: true, password: true, email: true },
-    include: {
-      posts: true,
-      followers: true,
-      following: true,
-      sentRequests: {
-        select: {
-          id: true,
-          sender: { omit: { id: true, password: true, email: true } },
-          receiver: { omit: { id: true, password: true, email: true } },
-          status: true,
-        },
-      },
-      receivedRequests: {
-        select: {
-          id: true,
-          sender: { omit: { id: true, password: true, email: true } },
-          receiver: { omit: { id: true, password: true, email: true } },
-          status: true,
-        },
-      },
-    },
+    ...publicUserArgs,
   });
   res.json(users);
 };
@@ -90,28 +70,7 @@ const unFollowUser = async (req, res) => {
     data: {
       following: { disconnect: { username: req.params.username } },
     },
-    omit: { id: true, password: true, email: true },
-    include: {
-      posts: true,
-      followers: true,
-      following: true,
-      sentRequests: {
-        select: {
-          id: true,
-          sender: { omit: { id: true, password: true, email: true } },
-          receiver: { omit: { id: true, password: true, email: true } },
-          status: true,
-        },
-      },
-      receivedRequests: {
-        select: {
-          id: true,
-          sender: { omit: { id: true, password: true, email: true } },
-          receiver: { omit: { id: true, password: true, email: true } },
-          status: true,
-        },
-      },
-    },
+    ...publicUserArgs,
   });
   res.json(user);
 };
