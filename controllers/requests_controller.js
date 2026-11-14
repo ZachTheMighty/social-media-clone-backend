@@ -28,6 +28,7 @@ const createRequest = async (req, res) => {
       senderId: req.user.id,
       receiverId: receiver.id,
     },
+    select: { ...publicRequest },
   });
   res.json(request);
 };
