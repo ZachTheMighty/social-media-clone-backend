@@ -42,6 +42,7 @@ model Post {
   authorId Int
   comments Comment[]
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("posts")
 }
@@ -59,6 +60,7 @@ model Comment {
   commentId Int?
   replies   Comment[] @relation("CommentReplies")
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("comments")
 }
@@ -71,6 +73,7 @@ model Request {
   receiverId Int           @map("receiver_id")
   status     RequestStatus @default(PENDING)
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("requests")
 }

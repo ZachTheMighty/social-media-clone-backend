@@ -8,6 +8,7 @@ const publicRequest = {
   id: true,
   status: true,
   createdAt: true,
+  updatedAt: true,
   sender: { omit: publicUserOmit },
   receiver: { omit: publicUserOmit },
 };
