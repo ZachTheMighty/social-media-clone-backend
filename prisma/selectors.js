@@ -7,6 +7,7 @@ const publicUserOmit = {
 const publicRequest = {
   id: true,
   status: true,
+  createdAt: true,
   sender: { omit: publicUserOmit },
   receiver: { omit: publicUserOmit },
 };

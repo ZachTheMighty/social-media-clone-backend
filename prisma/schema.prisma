@@ -41,6 +41,7 @@ model Post {
   author   User      @relation(fields: [authorId], references: [id])
   authorId Int
   comments Comment[]
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("posts")
 }
@@ -57,6 +58,7 @@ model Comment {
   comment   Comment?  @relation("CommentReplies", fields: [commentId], references: [id])
   commentId Int?
   replies   Comment[] @relation("CommentReplies")
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("comments")
 }
@@ -68,6 +70,7 @@ model Request {
   receiver   User          @relation("ReceiverUser", fields: [receiverId], references: [id])
   receiverId Int           @map("receiver_id")
   status     RequestStatus @default(PENDING)
+  createdAt DateTime @default(now()) @map("created_at")
 
   @@map("requests")
 }
