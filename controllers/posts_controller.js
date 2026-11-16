@@ -1,5 +1,6 @@
 const prisma = require("../lib/prisma.ts");
 const validatePost = require("../middlewares/validate_post.js");
+const { publicPostArgs } = require("../prisma/selectors.js");
 
 const createPost = [
   validatePost,
@@ -10,6 +11,7 @@ const createPost = [
         title: req.body.title,
         content: req.body.content,
       },
+      ...publicPostArgs,
     });
     res.json(post);
   },
