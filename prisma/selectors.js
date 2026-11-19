@@ -15,7 +15,17 @@ const publicRequest = {
 
 const publicPostArgs = {
   omit: { authorId: true },
-  include: { author: { omit: publicUserOmit } },
+  include: {
+    author: { omit: publicUserOmit },
+    votes: {
+      omit: { userId: true },
+      include: { user: { omit: publicUserOmit } },
+    },
+    comments: {
+      omit: { authorId: true },
+      include: { author: { omit: publicUserOmit } },
+    },
+  },
 };
 
 const publicFollowArgs = {
