@@ -5,5 +5,6 @@ const authenticate = require("../middlewares/authenticate.js");
 route.use(authenticate);
 route.post("/", controller.createPost);
 route.post("/:id/votes/:state", controller.votePost);
+route.delete("/:id", controller.deletePost);
 
 module.exports = route;

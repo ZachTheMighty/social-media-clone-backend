@@ -70,4 +70,13 @@ const votePost = async (req, res) => {
   );
 };
 
-module.exports = { createPost, votePost };
+const deletePost = async (req, res) => {
+  res.json(
+    await prisma.post.delete({
+      where: { id: +req.params.id },
+      ...publicPostArgs,
+    }),
+  );
+};
+
+module.exports = { createPost, votePost, deletePost };
