@@ -6,5 +6,6 @@ route.use(authenticate);
 route.post("/", controller.createPost);
 route.post("/:id/votes/:state", controller.votePost);
 route.delete("/:id", controller.deletePost);
+route.put("/:id", controller.editPost);
 
 module.exports = route;
