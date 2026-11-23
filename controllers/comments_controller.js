@@ -113,23 +113,26 @@ const deleteComment = async (req, res) => {
   );
 };
 
-const editComment = async (req, res) => {
-  res.json(
-    await prisma.post.update({
-      where: { id: +req.body.postId },
-      data: {
-        comments: {
-          update: {
-            where: { id: +req.params.id },
-            data: {
-              content: req.body.content.content,
+const editComment = [
+  validateComment,
+  async (req, res) => {
+    res.json(
+      await prisma.post.update({
+        where: { id: +req.body.postId },
+        data: {
+          comments: {
+            update: {
+              where: { id: +req.params.id },
+              data: {
+                content: req.body.content,
+              },
             },
           },
         },
-      },
-      ...publicPostArgs,
-    }),
-  );
-};
+        ...publicPostArgs,
+      }),
+    );
+  },
+];
 
 module.exports = { voteComment, deleteComment, editComment, createComment };

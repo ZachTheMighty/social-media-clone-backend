@@ -79,16 +79,19 @@ const deletePost = async (req, res) => {
   );
 };
 
-const editPost = async (req, res) => {
-  res.json(
-    await prisma.post.update({
-      where: { id: +req.params.id },
-      data: {
-        content: req.body.content,
-      },
-      ...publicPostArgs,
-    }),
-  );
-};
+const editPost = [
+  validatePost,
+  async (req, res) => {
+    res.json(
+      await prisma.post.update({
+        where: { id: +req.params.id },
+        data: {
+          content: req.body.content,
+        },
+        ...publicPostArgs,
+      }),
+    );
+  },
+];
 
 module.exports = { createPost, votePost, deletePost, editPost };
