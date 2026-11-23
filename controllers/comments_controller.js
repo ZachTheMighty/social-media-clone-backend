@@ -1,5 +1,26 @@
 const prisma = require("../lib/prisma.ts");
+const validateComment = require("../middlewares/validate_comment.js");
 const { publicPostArgs } = require("../prisma/selectors");
+
+const createComment = [
+  validateComment,
+  async (req, res) => {
+    res.json(
+      await prisma.post.update({
+        where: { id: +req.body.postId },
+        data: {
+          comments: {
+            create: {
+              authorId: req.user.id,
+              content: req.body.comment,
+            },
+          },
+        },
+        ...publicPostArgs,
+      }),
+    );
+  },
+];
 
 const voteComment = async (req, res) => {
   const commentId = +req.params.id;
@@ -111,4 +132,4 @@ const editComment = async (req, res) => {
   );
 };
 
-module.exports = { voteComment, deleteComment, editComment };
+module.exports = { voteComment, deleteComment, editComment, createComment };
