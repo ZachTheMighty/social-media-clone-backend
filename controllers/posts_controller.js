@@ -85,7 +85,6 @@ const editPost = async (req, res) => {
     await prisma.post.update({
       where: { id: +req.params.id },
       data: {
-        title: req.body.title,
         content: req.body.content,
       },
       ...publicPostArgs,
