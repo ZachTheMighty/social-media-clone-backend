@@ -53,6 +53,8 @@ model Vote {
   userId  Int @map("user_id")
   post      Post      @relation(fields: [postId], references: [id])
   postId    Int @map("post_id")
+  comment      Comment?      @relation(fields: [commentId], references: [id])
+  commentId    Int? @map("comment_id")
   state VoteState
   @@map("votes")
 }
@@ -65,8 +67,7 @@ enum VoteState {
 model Comment {
   id        Int       @id @default(autoincrement())
   content   String
-  likes     Int       @default(0)
-  dislikes  Int       @default(0)
+  votes Vote[]
   author    User      @relation(fields: [authorId], references: [id])
   authorId  Int @map("author_id")
   post      Post      @relation(fields: [postId], references: [id])

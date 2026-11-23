@@ -13,6 +13,17 @@ const publicRequest = {
   receiver: { omit: publicUserOmit },
 };
 
+const publicCommentArgs = {
+  omit: { authorId: true },
+  include: {
+    author: { omit: publicUserOmit },
+    votes: {
+      omit: { userId: true },
+      include: { user: { omit: publicUserOmit } },
+    },
+  },
+};
+
 const publicPostArgs = {
   omit: { authorId: true },
   include: {
@@ -21,10 +32,7 @@ const publicPostArgs = {
       omit: { userId: true },
       include: { user: { omit: publicUserOmit } },
     },
-    comments: {
-      omit: { authorId: true },
-      include: { author: { omit: publicUserOmit } },
-    },
+    comments: publicCommentArgs,
   },
 };
 
@@ -49,4 +57,5 @@ module.exports = {
   publicRequest,
   publicUserArgs,
   publicPostArgs,
+  publicCommentArgs,
 };
